@@ -1,0 +1,44 @@
+services:
+  api:
+    build: .
+    container_name: crisiview-api-staging
+    restart: always
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=database
+      - DB_PORT=3306
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - crisiview-network
+
+  database:
+    image: mysql:8.0
+    container_name: crisiview-db-staging
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - crisiview-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  crisiview-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
