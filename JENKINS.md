@@ -1,6 +1,5 @@
 # 1 - Configuration Jenkins pour build/push Docker
 
-1) Créer le jobs 
 - Name: Integration-Delivery-Pipeline-Backend
 - Type: Pipeline script from SCM
 - Repository URL: https://github.com/danphannguyen/efrei_api_crisiview.git
@@ -22,6 +21,12 @@
 - Branch specifier: */main
 - Script path: Jenkinsfile.deploy
 - Add Parameter → "String Parameter".
+  - `APP_NAME` - nom de l'application, ici `efrei-api-crisiview` (utilisé et Docker)
   - `DEPLOY_HOST`: l'ip de votre machine de déploiement
   - `DEPLOY_USER`: Utilisateur SSH pour le déploiement
   **Obligatoire** — le pipeline échouera si non défini.
+
+2) Ajouter le .env sur la VM
+- nano /opt/efrei-api-crisiview/.env
+- Copier votre .env
+- chmod 600 /opt/efrei-api-crisiview/.env

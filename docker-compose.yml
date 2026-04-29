@@ -1,6 +1,6 @@
 services:
   api:
-    build: .
+    image: dvnpn/efrei-api-crisiview:latest 
     container_name: crisiview-api-staging
     restart: always
     ports:
